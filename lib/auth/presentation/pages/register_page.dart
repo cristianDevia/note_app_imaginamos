@@ -61,74 +61,79 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.lock_open_rounded,
-                  size: 80,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(height: 50),
-                Text(
-                  "Crea una cuenta!!",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 25),
-                InputField(
-                  controller: nameController,
-                  hintTex: "name",
-                  obscureText: false,
-                ),
-                const SizedBox(height: 10),
-                InputField(
-                  controller: emailController,
-                  hintTex: "email",
-                  obscureText: false,
-                ),
-                const SizedBox(height: 10),
-                InputField(
-                  controller: passwordController,
-                  hintTex: "password",
-                  obscureText: true,
-                ),
-                const SizedBox(height: 10),
-                InputField(
-                  controller: confirmPasswordController,
-                  hintTex: "confirm password",
-                  obscureText: true,
-                ),
-                const SizedBox(height: 10),
-                AuthButton(
-                    onTap: () {
-                      register();
-                    },
-                    text: 'Register'),
-                const SizedBox(height: 50),
-                Row(
+            child: SingleChildScrollView(
+              child: SizedBox(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Eres miembro ? ",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary),
+                    Icon(
+                      Icons.lock_open_rounded,
+                      size: 80,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                    GestureDetector(
-                      onTap: widget.togglePages,
-                      child: Text(
-                        "Inicia sesion",
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    const SizedBox(height: 50),
+                    Text(
+                      "Crea una cuenta!!",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 16,
                       ),
+                    ),
+                    const SizedBox(height: 25),
+                    InputField(
+                      controller: nameController,
+                      hintTex: "name",
+                      obscureText: false,
+                    ),
+                    const SizedBox(height: 10),
+                    InputField(
+                      controller: emailController,
+                      hintTex: "email",
+                      obscureText: false,
+                    ),
+                    const SizedBox(height: 10),
+                    InputField(
+                      controller: passwordController,
+                      hintTex: "password",
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 10),
+                    InputField(
+                      controller: confirmPasswordController,
+                      hintTex: "confirm password",
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 10),
+                    AuthButton(
+                        onTap: () {
+                          register();
+                        },
+                        text: 'Register'),
+                    const SizedBox(height: 50),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Eres miembro ? ",
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                        GestureDetector(
+                          onTap: widget.togglePages,
+                          child: Text(
+                            "Inicia sesion",
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

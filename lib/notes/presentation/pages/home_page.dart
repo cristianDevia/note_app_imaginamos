@@ -145,10 +145,10 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(
           Icons.add,
-          color: Theme.of(context).colorScheme.inversePrimary,
+          color: Theme.of(context).colorScheme.tertiary,
         ),
         onPressed: () {
           showDialog(
