@@ -15,6 +15,7 @@ class Note {
     required this.timestamp,
   });
 
+  //Note to Json
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -25,6 +26,7 @@ class Note {
     };
   }
 
+  //Json to Note
   factory Note.fromJson(Map<String, dynamic> json) {
     return Note(
       id: json['id'],
@@ -33,5 +35,15 @@ class Note {
       text: json['text'],
       timestamp: (json['timestamp'] as Timestamp).toDate(),
     );
+  }
+
+  //update note
+  Note updateNote({String? newTitle, String? newTex}) {
+    return Note(
+        id: id,
+        userId: userId,
+        title: newTitle ?? title,
+        text: newTex ?? text,
+        timestamp: timestamp);
   }
 }

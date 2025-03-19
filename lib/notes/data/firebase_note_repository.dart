@@ -57,4 +57,26 @@ class FirebaseNoteRepository implements NoteRepository {
       throw Exception("Error fetching notes by user $e");
     }
   }
+
+  @override
+  Future<void> updateNote(Note updatedNote) async {
+    try {
+      await noteCollection
+          .doc(updatedNote.id)
+          .update({'title': updatedNote.title, 'text': updatedNote.text});
+    } catch (e) {
+      throw Exception("Error updating note $e");
+    }
+  }
+
+  @override
+  Future<Note> fetchNoteById(String noteId) async {
+    try {
+      final noteSnapshot = await noteCollection.doc(noteId).get();
+      final userNote = Note.fromJson(noteSnapshot as Map<String, dynamic>);
+      return userNote;
+    } catch (e) {
+      throw Exception("Error fetching note by id $e");
+    }
+  }
 }

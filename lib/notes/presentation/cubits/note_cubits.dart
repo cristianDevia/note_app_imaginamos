@@ -14,17 +14,17 @@ class NoteCubit extends Cubit<NoteState> {
       final createNote = await noteRepository.createNote(note);
       return createNote;
     } catch (e) {
-      emit(NotesError("Failed to create note $e"));
+      emit(NotesError("Failed to create note ${e.toString()}"));
     }
   }
 
-  Future<void> fetchNoteById(String userId) async {
+  Future<void> fetchNoteByUserId(String userId) async {
     try {
       emit(NotesLoading());
       final notes = await noteRepository.fetchNoteByUserId(userId);
       emit(NoteLoaded(notes));
     } catch (e) {
-      emit(NotesError("Failed to fetch note $e"));
+      emit(NotesError("Failed to fetch note ${e.toString()}"));
     }
   }
 
@@ -32,7 +32,25 @@ class NoteCubit extends Cubit<NoteState> {
     try {
       await noteRepository.deleteNote(noteId);
     } catch (e) {
-      emit(NotesError("Failed to delete note $e"));
+      emit(NotesError("Failed to delete note ${e.toString()}"));
+    }
+  }
+
+  Future<void> updateNote({
+    required String id,
+    String? newTitle,
+    String? newText,
+  }) async {
+    emit(NotesLoading());
+    try {
+      //current note
+      final currentNote = await noteRepository.fetchNoteById(id);
+      final updatedNote = currentNote.updateNote(
+          newTitle: newTitle ?? currentNote.title,
+          newTex: newText ?? currentNote.text);
+      await noteRepository.updateNote(updatedNote);
+    } catch (e) {
+      emit(NotesError("Failed to updated note ${e.toString()}"));
     }
   }
 }
