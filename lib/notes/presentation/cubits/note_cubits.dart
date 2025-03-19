@@ -41,14 +41,15 @@ class NoteCubit extends Cubit<NoteState> {
     String? newTitle,
     String? newText,
   }) async {
-    emit(NotesLoading());
     try {
+      emit(NotesLoading());
       //current note
       final currentNote = await noteRepository.fetchNoteById(id);
       final updatedNote = currentNote.updateNote(
           newTitle: newTitle ?? currentNote.title,
           newTex: newText ?? currentNote.text);
       await noteRepository.updateNote(updatedNote);
+      await fetchNoteByUserId(updatedNote.userId);
     } catch (e) {
       emit(NotesError("Failed to updated note ${e.toString()}"));
     }
