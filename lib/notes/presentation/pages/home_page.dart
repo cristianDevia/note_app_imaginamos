@@ -56,6 +56,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: BlocBuilder<NoteCubit, NoteState>(builder: (context, state) {
+        print(state);
         //loading notes
         if (state is NotesLoading && state is NotesUploading) {
           return const Center(
@@ -65,7 +66,6 @@ class _HomePageState extends State<HomePage> {
           // notes loaded
         } else if (state is NoteLoaded) {
           final notes = state.notes;
-          print("Las notas: ${notes}");
           if (notes.isEmpty) {
             return const Center(
               child: Text("No hay notas disponibles"),
