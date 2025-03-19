@@ -75,6 +75,7 @@ class _HomePageState extends State<HomePage> {
             itemCount: notes.length,
             itemBuilder: (context, index) {
               final note = notes[index];
+
               return Container(
                 margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -92,7 +93,9 @@ class _HomePageState extends State<HomePage> {
                       backgroundColor: Colors.red,
                       foregroundColor: Colors.white,
                       icon: Icons.delete,
-                      onPressed: (context) {},
+                      onPressed: (context) {
+                        _deleteNoteDialog(note.id);
+                      },
                     ),
                     SlidableAction(
                       backgroundColor: Colors.amber,
@@ -137,6 +140,34 @@ class _HomePageState extends State<HomePage> {
           showDialog(
               context: context, builder: (context) => const AddNoteDialog());
         },
+      ),
+    );
+  }
+
+  void _deleteNoteDialog(String noteId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Eliminar Nota ?"),
+        actions: [
+          //cancel
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Cancelar"),
+          ),
+
+          //delete
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () {
+                deleteNote(noteId);
+                Navigator.of(context).pop();
+              },
+              child: const Text("Eliminar"))
+        ],
       ),
     );
   }
