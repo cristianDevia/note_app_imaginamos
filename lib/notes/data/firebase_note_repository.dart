@@ -27,11 +27,11 @@ class FirebaseNoteRepository implements NoteRepository {
   }
 
   @override
-  Future<List<Note>> fetchAllNotes() async {
+  Future<List<Note>> searchNotesForTitle(String title) async {
     try {
       //sort notes descending
       final noteSnapshot =
-          await noteCollection.orderBy('timestamp', descending: true).get();
+          await noteCollection.where('title', isEqualTo: title).get();
 
       // convert each document from json to list
       final List<Note> allNotes = noteSnapshot.docs

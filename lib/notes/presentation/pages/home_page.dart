@@ -9,6 +9,7 @@ import 'package:note_app/notes/domain/entities/note.dart';
 import 'package:note_app/notes/presentation/cubits/note_cubits.dart';
 import 'package:note_app/notes/presentation/cubits/note_states.dart';
 import 'package:note_app/notes/presentation/widgets/add_note_dialog.dart';
+import 'package:note_app/notes/presentation/widgets/search_input_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -48,7 +49,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Home Page"),
+        title: const Text("Imaginamos NoteApp"),
         actions: [
           IconButton(
             onPressed: () {
@@ -58,39 +59,26 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: BlocBuilder<NoteCubit, NoteState>(builder: (context, state) {
-        print(state);
-        //loading notes
-        if (state is NotesLoading && state is NotesUploading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+      body: Column(
+        children: [
+          const SearchInputBar(),
+          BlocBuilder<NoteCubit, NoteState>(builder: (context, state) {
+            print(state);
+            //loading notes
+            if (state is NotesLoading && state is NotesUploading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
 
-          // notes loaded
-        } else if (state is NoteLoaded) {
-          final notes = state.notes;
-          if (notes.isEmpty) {
-            return const Center(
-              child: Text("No hay notas disponibles"),
-            );
-          }
-          return Column(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.all(10),
-                child: TextField(
-                  onChanged: (query) {},
-                  decoration: InputDecoration(
-                    labelText: 'Buscar',
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
+              // notes loaded
+            } else if (state is NoteLoaded) {
+              final notes = state.notes;
+              if (notes.isEmpty) {
+                return const Center(
+                  child: Text("No hay notas disponibles"),
+                );
+              }
+              return Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: notes.length,
@@ -142,20 +130,20 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                 ),
-              ),
-            ],
-          );
-        }
+              );
+            }
 
-        // notes error
-        else if (state is NotesError) {
-          return Center(
-            child: Text(state.message),
-          );
-        } else {
-          return const SizedBox();
-        }
-      }),
+            // notes error
+            else if (state is NotesError) {
+              return Center(
+                child: Text(state.message),
+              );
+            } else {
+              return const SizedBox();
+            }
+          }),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.secondary,
         child: Icon(

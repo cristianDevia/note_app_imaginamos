@@ -28,6 +28,16 @@ class NoteCubit extends Cubit<NoteState> {
     }
   }
 
+  Future<void> searchNotesForTitle(String title) async {
+    try {
+      emit(NotesLoading());
+      final notes = await noteRepository.searchNotesForTitle(title);
+      emit(NoteLoaded(notes));
+    } catch (e) {
+      emit(NotesError("Failed to search notes ${e.toString()}"));
+    }
+  }
+
   Future<void> deleteNote(String noteId) async {
     try {
       await noteRepository.deleteNote(noteId);
