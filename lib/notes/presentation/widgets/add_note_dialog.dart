@@ -6,7 +6,8 @@ import 'package:note_app/notes/domain/entities/note.dart';
 import 'package:note_app/notes/presentation/cubits/note_cubits.dart';
 
 class AddNoteDialog extends StatefulWidget {
-  const AddNoteDialog({super.key});
+  final Note? updateNote;
+  const AddNoteDialog({super.key, this.updateNote});
 
   @override
   State<AddNoteDialog> createState() => _AddNoteDialogState();
@@ -14,8 +15,10 @@ class AddNoteDialog extends StatefulWidget {
 
 class _AddNoteDialogState extends State<AddNoteDialog> {
   AppUser? currentUser;
-  final titleController = TextEditingController();
-  final descriptionController = TextEditingController();
+  late TextEditingController titleController =
+      TextEditingController(text: widget.updateNote?.title ?? '');
+  late TextEditingController descriptionController =
+      TextEditingController(text: widget.updateNote?.text ?? '');
 
   void getCurrentUser() async {
     final authCubit = context.read<AuthCubit>();
@@ -53,6 +56,24 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
     }
   }
 
+  void updateNote() {
+    final String title = titleController.text;
+    final String description = descriptionController.text;
+    final Note? updateNote = widget.updateNote;
+
+    if (title.isNotEmpty && description.isNotEmpty) {
+      if (currentUser != null && updateNote != null) {
+        final noteCubit = context.read<NoteCubit>();
+        noteCubit.updateNote(
+            id: updateNote.id, newTitle: title, newText: description);
+        Navigator.pop(context);
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("El titulo y la nota es requerida")));
+    }
+  }
+
   @override
   void dispose() {
     titleController.dispose();
@@ -64,12 +85,12 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Theme.of(context).colorScheme.tertiary,
-      title: const Text(
-        "Agrega tu nota",
-        style: TextStyle(fontWeight: FontWeight.w500),
+      title: Text(
+        widget.updateNote != null ? "Actualiza tu nota" : "Agrega tu nota",
+        style: const TextStyle(fontWeight: FontWeight.w500),
       ),
       content: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
@@ -102,9 +123,13 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.inversePrimary),
             onPressed: () {
-              uploadNote();
+              if (widget.updateNote != null) {
+                updateNote();
+              } else {
+                uploadNote();
+              }
             },
-            child: const Text("Agregar")),
+            child: Text(widget.updateNote != null ? "Actualizar" : "Agregar")),
       ],
     );
   }

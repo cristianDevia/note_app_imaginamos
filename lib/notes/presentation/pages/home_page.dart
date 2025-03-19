@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:note_app/auth/domain/entities/app_user.dart';
 import 'package:note_app/auth/presentation/cubits/auth_cubits.dart';
+import 'package:note_app/notes/domain/entities/note.dart';
 import 'package:note_app/notes/presentation/cubits/note_cubits.dart';
 import 'package:note_app/notes/presentation/cubits/note_states.dart';
 import 'package:note_app/notes/presentation/widgets/add_note_dialog.dart';
@@ -102,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                       foregroundColor: Colors.white,
                       icon: Icons.edit,
                       onPressed: (context) {
-                        _updateNote(note.id);
+                        _updateNote(note);
                       },
                     )
                   ]),
@@ -174,7 +175,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _updateNote(String noteId) {
-    showDialog(context: context, builder: (context) => const AddNoteDialog());
+  void _updateNote(Note note) {
+    showDialog(
+        context: context,
+        builder: (context) => AddNoteDialog(
+              updateNote: note,
+            ));
   }
 }
