@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:note_app/auth/domain/entities/app_user.dart';
@@ -72,55 +74,76 @@ class _HomePageState extends State<HomePage> {
               child: Text("No hay notas disponibles"),
             );
           }
-          return ListView.builder(
-            itemCount: notes.length,
-            itemBuilder: (context, index) {
-              final note = notes[index];
-
-              return Container(
+          return Column(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Slidable(
-                  key: ValueKey(note.id),
-                  startActionPane:
-                      ActionPane(motion: const DrawerMotion(), children: [
-                    SlidableAction(
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          bottomLeft: Radius.circular(12)),
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      icon: Icons.delete,
-                      onPressed: (context) {
-                        _deleteNoteDialog(note.id);
-                      },
+                child: TextField(
+                  onChanged: (query) {},
+                  decoration: InputDecoration(
+                    labelText: 'Buscar',
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
-                    SlidableAction(
-                      backgroundColor: Colors.amber,
-                      foregroundColor: Colors.white,
-                      icon: Icons.edit,
-                      onPressed: (context) {
-                        _updateNote(note);
-                      },
-                    )
-                  ]),
-                  child: ListTile(
-                    title: Text(
-                      note.title,
-                      style: const TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                    subtitle: Text(
-                      note.text,
-                    ),
-                    trailing: Text(
-                        "${note.timestamp.day} / ${note.timestamp.month} / ${note.timestamp.year}"),
                   ),
                 ),
-              );
-            },
+              ),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: notes.length,
+                  itemBuilder: (context, index) {
+                    final note = notes[index];
+
+                    return Container(
+                      margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondary,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Slidable(
+                        key: ValueKey(note.id),
+                        startActionPane:
+                            ActionPane(motion: const DrawerMotion(), children: [
+                          SlidableAction(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                bottomLeft: Radius.circular(12)),
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            onPressed: (context) {
+                              _deleteNoteDialog(note.id);
+                            },
+                          ),
+                          SlidableAction(
+                            backgroundColor: Colors.amber,
+                            foregroundColor: Colors.white,
+                            icon: Icons.edit,
+                            onPressed: (context) {
+                              _updateNote(note);
+                            },
+                          )
+                        ]),
+                        child: ListTile(
+                          title: Text(
+                            note.title,
+                            style: const TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          subtitle: Text(
+                            note.text,
+                          ),
+                          trailing: Text(
+                              "${note.timestamp.day} / ${note.timestamp.month} / ${note.timestamp.year}"),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         }
 
