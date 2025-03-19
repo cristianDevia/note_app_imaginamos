@@ -44,7 +44,7 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
         );
         final noteCubit = context.read<NoteCubit>();
         noteCubit.createNote(newNote);
-        noteCubit.fetchNoteById(currentUser!.uid);
+        noteCubit.fetchNoteByUserId(currentUser!.uid);
         Navigator.pop(context);
       }
     } else {

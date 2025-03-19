@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void fetchNotes() {
-    noteCubit.fetchNoteById(currentUser!.uid);
+    noteCubit.fetchNoteByUserId(currentUser!.uid);
   }
 
   void deleteNote(String noteId) {
@@ -101,7 +101,9 @@ class _HomePageState extends State<HomePage> {
                       backgroundColor: Colors.amber,
                       foregroundColor: Colors.white,
                       icon: Icons.edit,
-                      onPressed: (context) {},
+                      onPressed: (context) {
+                        _updateNote(note.id);
+                      },
                     )
                   ]),
                   child: ListTile(
@@ -170,5 +172,9 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  void _updateNote(String noteId) {
+    showDialog(context: context, builder: (context) => const AddNoteDialog());
   }
 }
