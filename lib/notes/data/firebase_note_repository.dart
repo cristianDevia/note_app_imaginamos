@@ -73,7 +73,8 @@ class FirebaseNoteRepository implements NoteRepository {
   Future<Note> fetchNoteById(String noteId) async {
     try {
       final noteSnapshot = await noteCollection.doc(noteId).get();
-      final userNote = Note.fromJson(noteSnapshot as Map<String, dynamic>);
+      final userNote =
+          Note.fromJson(noteSnapshot.data() as Map<String, dynamic>);
       return userNote;
     } catch (e) {
       throw Exception("Error fetching note by id $e");
